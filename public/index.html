@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Meridian Hospital</title>
+<meta name="description" content="Hospital management for patients, doctors and administration.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<div class="splash" id="splash" aria-hidden="true">
+  <i class="half t"></i>
+  <i class="half b"></i>
+  <div class="splash-mark">
+    <svg viewBox="0 0 120 120" width="120" height="120">
+      <path pathLength="1" d="M60 8 L105 34 V86 L60 112 L15 86 V34 Z"/>
+      <path pathLength="1" d="M48 44 L32 60 L48 76"/>
+      <path pathLength="1" d="M72 44 L88 60 L72 76"/>
+      <path class="plus" pathLength="1" d="M60 51 V69 M51 60 H69"/>
+    </svg>
+    <span>MERIDIAN HOSPITAL</span>
+  </div>
+</div>
+<script>
+(function(){
+  var s = document.getElementById('splash');
+  if (!s) return;
+  // If already viewed in this session or prefers reduced motion, dismiss immediately
+  try {
+    if (sessionStorage.getItem('mh_splash_seen') || (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)) {
+      s.remove();
+      return;
+    }
+  } catch(e) {}
+
+  var done = false;
+  function dismiss() {
+    if (done || !s) return;
+    done = true;
+    try { sessionStorage.setItem('mh_splash_seen', '1'); } catch(e) {}
+    s.classList.add('open');
+    s.style.pointerEvents = 'none';
+    s.style.opacity = '0';
+    setTimeout(function() {
+      if (s && s.parentNode) s.parentNode.removeChild(s);
+    }, 400);
+  }
+
+  // Allow clicking anywhere to skip splash immediately
+  s.addEventListener('click', dismiss);
+  window.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' || e.key === ' ' || e.key === 'Enter') dismiss();
+  }, { once: true });
+
+  // Auto-open after shutter animation plays (1.3s)
+  setTimeout(dismiss, 1300);
+  // Guarantee DOM cleanup even if timers jitter
+  setTimeout(function() {
+    if (s && s.parentNode) s.parentNode.removeChild(s);
+  }, 2000);
+})();
+</script>
+<div id="v-landing">
+  <header class="hero">
+    <div class="wrap">
+      <div class="hero-grid">
+        <div class="hero-content">
+          <div class="mark">
+            <svg width="34" height="34" viewBox="0 0 34 34" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="17" cy="17" r="14"/><ellipse cx="17" cy="17" rx="6" ry="14"/><path d="M3 17h28"/></svg>
+            <span>Hospital management system</span>
+          </div>
+          <h1>Meridian <em>Hospital</em></h1>
+          <p class="lead">One unified system for patients, doctors and administration. Book appointments, monitor admissions, access digital health records and manage prescriptions in one seamless place.</p>
+          <div class="ecg-wrap">
+            <svg class="ecg" viewBox="0 0 420 80"><path d="M0 40h120l15-30 20 60 18-45 12 15h235"/></svg>
+          </div>
+          <div class="cta">
+            <button class="btn primary" data-act="jump" data-to="roles">Choose your role</button>
+            <button class="btn" data-act="jump" data-to="preview">Preview the app</button>
+          </div>
+        </div>
+        <div class="hero-side">
+          <div class="hero-card">
+            <div class="hero-card-head">
+              <div style="display:flex;align-items:center;gap:8px">
+                <span class="live-dot"></span>
+                <strong>Clinical Operations</strong>
+              </div>
+              <span class="mono note-sm">Live System</span>
+            </div>
+            <div class="hero-card-stats">
+              <div class="hero-stat">
+                <span class="hero-stat-val">24/7</span>
+                <span class="hero-stat-lbl">Emergency & Inpatient</span>
+              </div>
+              <div class="hero-stat">
+                <span class="hero-stat-val">6</span>
+                <span class="hero-stat-lbl">Specialized Depts</span>
+              </div>
+              <div class="hero-stat">
+                <span class="hero-stat-val">30</span>
+                <span class="hero-stat-lbl">Bed Capacity</span>
+              </div>
+            </div>
+            <div class="hero-card-list">
+              <div class="hero-card-item">
+                <span class="item-icon">✓</span>
+                <div>
+                  <strong>Automated Appointment Reminders</strong>
+                  <small>Timed patient alerts 1 day before, day-of & 1 hr prior</small>
+                </div>
+              </div>
+              <div class="hero-card-item">
+                <span class="item-icon">✓</span>
+                <div>
+                  <strong>Doctor Availability & Scheduling</strong>
+                  <small>Real-time slot allocation for regular & visiting doctors</small>
+                </div>
+              </div>
+              <div class="hero-card-item">
+                <span class="item-icon">✓</span>
+                <div>
+                  <strong>Unified Digital Health Records</strong>
+                  <small>Live vitals tracking, prescriptions and admissions</small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section id="preview" class="band">
+    <div class="wrap">
+      <h2>Preview the app</h2>
+      <p class="sub">See what each role gets after signing in. Sample data only.</p>
+      <div class="tabs" role="tablist" id="pv-tabs"></div>
+      <div class="mock" id="pv-mock"></div>
+    </div>
+  </section>
+
+  <section id="roles" class="band alt">
+    <div class="wrap">
+      <h2>Who is signing in?</h2>
+      <p class="sub">Pick your role first. You will sign in with Google or an email account, or register, on the next step.</p>
+      <div class="roles" id="role-grid"></div>
+    </div>
+  </section>
+  <div class="wrap foot">Meridian Hospital · Hospital management system.</div>
+</div>
+
+<div id="v-auth" hidden>
+  <div class="wrap auth-wrap">
+    <div class="auth">
+      <button class="linkbtn back" data-act="back">← Change role</button>
+      <div>
+        <span class="pill" id="au-role">Role</span>
+        <h2 id="au-title" class="au-title" tabindex="-1">Sign in</h2>
+      </div>
+      <div class="tabs tight" role="tablist">
+        <button class="tab" role="tab" data-act="auth-tab" data-mode="signin" id="t-signin">Sign in</button>
+        <button class="tab" role="tab" data-act="auth-tab" data-mode="register" id="t-register">Register</button>
+      </div>
+      <div class="gwrap" id="g-box"></div>
+      <div class="sep" id="g-sep">or use email</div>
+      
+      <form id="f-signin">
+        <label>Email<input id="s-email" type="email" autocomplete="email" required></label>
+        <label>Password<input id="s-pass" type="password" autocomplete="current-password" required></label>
+        <button class="btn primary" type="submit">Sign in</button>
+      </form>
+      <form id="f-register" hidden>
+        <label>Full name<input id="r-name" autocomplete="name" required></label>
+        <label>Email<input id="r-email" type="email" autocomplete="email" required></label>
+        <label id="r-gender-l">Gender
+          <select id="r-gender" required>
+            <option value="">Select gender</option>
+            <option value="F">Female</option>
+            <option value="M">Male</option>
+            <option value="Other">Other</option>
+          </select>
+        </label>
+        <div id="r-patient-l" class="fgrid" hidden>
+          <label>Age<input id="r-age" type="number" min="0" max="120" placeholder="e.g. 28"></label>
+          <label>Phone number<input id="r-phone" type="tel" autocomplete="tel" maxlength="30" placeholder="e.g. 9876543210"></label>
+        </div>
+        <label id="r-dept-l" hidden>Department<select id="r-dept"></select></label>
+        <div id="r-doctype-l" hidden>
+          <label>Doctor type<select id="r-doctype">
+            <option value="regular">Regular (Mon – Sat)</option>
+            <option value="visiting">Visiting Doctor</option>
+          </select></label>
+        </div>
+        <div id="r-avail-l" hidden style="margin-top:4px">
+          <fieldset class="avail-field">
+            <legend>Available days <span class="note-sm">(check all that apply)</span></legend>
+            <div id="r-avail-days" class="avail-days"></div>
+          </fieldset>
+        </div>
+        <div class="fgrid">
+          <label>Password<input id="r-pass" type="password" autocomplete="new-password" minlength="8" required></label>
+          <label>Confirm password<input id="r-pass2" type="password" autocomplete="new-password" minlength="8" required></label>
+        </div>
+        <button class="btn primary" type="submit">Create account</button>
+      </form>
+      <div class="msg" id="au-msg" role="alert" hidden></div>
+      <div class="ok-msg" id="au-ok" role="status" hidden></div>
+      <p class="note">Passwords are hashed on the server. Doctor accounts need administrator approval.</p>
+    </div>
+  </div>
+</div>
+
+<div id="v-app" hidden>
+  <div class="topbar">
+    <div class="wrap">
+      <div class="brand">
+        <svg width="26" height="26" viewBox="0 0 34 34" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><circle cx="17" cy="17" r="14"/><ellipse cx="17" cy="17" rx="6" ry="14"/><path d="M3 17h28"/></svg>
+        Meridian
+      </div>
+      <div class="who">
+        <div class="notif-wrap" id="notif-wrap" hidden>
+          <button type="button" class="notif-btn" data-act="toggle-notifs" aria-label="Appointment Reminders">
+            <span class="bell-icon">🔔</span>
+            <span class="notif-badge" id="notif-badge" hidden>0</span>
+          </button>
+          <div class="notif-popover" id="notif-popover" hidden>
+            <div class="notif-pop-head">
+              <strong>Appointment Reminders</strong>
+              <button type="button" class="btn small" data-act="mark-notifs-read">Mark all read</button>
+            </div>
+            <div class="notif-list" id="notif-pop-list"></div>
+          </div>
+        </div>
+        <span class="pill" id="ap-role"></span><span id="ap-name"></span><button class="btn small" data-act="signout">Sign out</button>
+      </div>
+    </div>
+  </div>
+  <div class="wrap shell">
+    <nav class="side" id="ap-nav" aria-label="Sections"></nav>
+    <main class="main" id="ap-main"></main>
+  </div>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="/app.js"></script>
+</body>
+</html>
